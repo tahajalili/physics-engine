@@ -28,8 +28,6 @@ function Ball(x, y, velocity, dy, radius, mass, color){
     
     this.update = function(){
         var ay = gravity;
-        // this.v += ay * fps;
-        // this.y += this.v *fps*100;
         if(this.y + radius > heigth){
             this.v = -this.v;
             this.v *= e;
