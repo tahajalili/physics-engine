@@ -22,23 +22,33 @@ var e = 0.8;
 function Ball(x, y, velocity, dy, radius, mass, color){
     this.x = x;
     this.y = y;
-    this.v = velocity;
+    this.vy = velocity;
+    this.vx = velocity;
     this.dy = dy;
     this.mass = mass;
     this.r = radius;
     this.color = color;
     
     this.update = function(){
-        var ay = gravity;
-        if(this.y + radius > heigth){
-            this.v = -this.v;
-            this.v *= e;
+        const floorCollision = this.y + this.r > heigth;
+        const rightCollision = this.x + this.r > width;
+        const leftCollision = this.x - this.r <0;
+        const xCollision = rightCollision || leftCollision;
+
+        if (floorCollision){
+            this.vy = -this.vy;
+            this.vy *=  e;
         }else{
-            this.v += ay * fps;
+            this.vy += gravity* fps;
         }
-        this.y += this.v *fps*100;
+        if (xCollision){
+            this.vx = -this.vx;
+        }
+        this.y += this.vy * fps * 100;
+        this.x += this.vx;
         this.draw();
-    }
+
+    };
 
     this.draw = function(){
         ctx.beginPath();
@@ -52,7 +62,7 @@ function Ball(x, y, velocity, dy, radius, mass, color){
 
 //working functions
 function init(){
-    b = new Ball(width/2,heigth-500,1,1,30,0.1,'red');
+    b = new Ball(120, heigth-500, 5, 1, 30, 0.1, 'red');
 }
 
 function animate(){
